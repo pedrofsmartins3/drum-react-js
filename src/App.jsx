@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { audioClips } from "./audioclips";
 
 function App() {
-
   
-  const [text, setText] = useState(null)
+  const [key, setKey] = useState([])
+
+  const text = audioClips.filter(clip => clip.keyTrigger === key).map(clip => clip.description) 
+  const displayText = text.length === 0 ?  "Playlist 1" : text
 
   useEffect(() => {
     document.addEventListener('keydown', (event) => {
@@ -14,20 +16,8 @@ function App() {
 
   function playAudio(audio) {
     document.getElementById(audio).play()
-    setText(`${audio}`)
-  }
-
-  const displayText = text === "Q" ? "Heater 1"
-                    : text === "W" ? "Heater 2"
-                    : text === "E" ? "Heater 3"
-                    : text === "A" ? "Heater 4"
-                    : text === "S" ? "Clap"
-                    : text === "D" ? "Open-HH"
-                    : text === "Z" ? "Kick-n'Hat"
-                    : text === "X" ? "Kick"
-                    : text === "C" ? "Closed-HH"
-                    : "Playlist 1"
-                    
+    setKey(`${audio}`)
+  }                    
 
   const buttons = audioClips.map(clip => {
     return (
@@ -51,7 +41,7 @@ function App() {
     <div id="drum-machine">
       <div id="display">
         <div id="buttons">{buttons}</div>
-        <p className="text">Audio: {displayText}</p>
+        <p className="text">{displayText}</p>
       </div>
     </div>
   );
